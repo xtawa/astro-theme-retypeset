@@ -37,7 +37,7 @@ const currentUI = ui[currentLang as keyof typeof ui] ?? {}
         showImages: false,
         translations: {
             placeholder: "Type to search...",
-            clear_search: "Clear",
+            clear_search: "",
             load_more: "Load more results",
             search_label: "Search this site",
             filters_label: "Filters",
@@ -76,6 +76,12 @@ const currentUI = ui[currentLang as keyof typeof ui] ?? {}
       border-radius: 0 !important;
       padding-left: 0 !important;
       font-weight: bold;
+    }
+    
+    .pagefind-ui__search-input svg,
+    .pagefind-ui__search-input::before,
+    .pagefind-ui__search-input::after {
+      display: none !important;
     }
     
     .pagefind-ui__result-excerpt {
