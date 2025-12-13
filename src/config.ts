@@ -201,7 +201,7 @@ export const themeConfig: ThemeConfig = {
     algolia: {
       enabled: true,
       appId: 'XG9J7TBGD8',
-      apiKey: '6738b60975e427e5f03336e138adc5f5',
+      apiKey: '5e7da999c5375ffc89f0dc6d38a81570',
       indexName: 'blog_xtyin',
     },
   },  
