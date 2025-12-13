@@ -1,0 +1,232 @@
+---
+import { getCollection, render } from 'astro:content'
+import { allLocales } from '@/config'
+import { getLangFromLocale, getLangRouteParam } from '@/i18n/lang'
+import Layout from '@/layouts/Layout.astro'
+
+export async function getStaticPaths() {
+  return allLocales.map(lang => ({
+    params: { lang: getLangRouteParam(lang) },
+  }))
+}
+
+const currentLang = getLangFromLocale(Astro.currentLocale)
+// Get casual page content with different language
+const allCasualEntries = await getCollection('casual')
+const casualEntry = allCasualEntries.find(entry => entry.data.lang === currentLang)
+  ?? allCasualEntries.find(entry => entry.data.lang === '')
+const { Content } = casualEntry ? await render(casualEntry) : { Content: null }
+
+import casualPostsStatic from '@/data/casual.json'
+---
+
+<Layout>
+  <!-- Decorative Line -->
+  <div class="uno-decorative-line" />
+  <!-- Casual Page Content -->
+  <div class="heti mb-12">
+    {Content && <Content />}
+  </div>
+
+  <!-- Telegram Posts -->
+  <div class="max-w-[var(--content-width)] mx-auto px-4 sm:px-0">
+    <!-- Loading State -->
+    <div id="casual-loading" class="animate-pulse flex flex-col gap-8">
+      {[1, 2, 3].map(() => (
+        <div class="relative pl-6 border-l-2 border-gray-200 dark:border-gray-800">
+          <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 mb-4"></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Tags Section -->
+    <div id="casual-tags" class="flex flex-wrap gap-2 mb-8 hidden">
+      <!-- Tags will be injected here -->
+    </div>
+
+    <!-- Content Container -->
+    <div id="casual-container" class="flex flex-col gap-8 hidden">
+      <!-- Data will be injected here -->
+    </div>
+
+    <!-- Error State -->
+    <div id="casual-error" class="hidden text-center text-red-500 py-8">
+      Failed to load updates.
+    </div>
+  </div>
+</Layout>
+
+<script>
+  let allPostsData = [];
+  let activeTag = null;
+
+  async function loadCasualPosts() {
+    const container = document.getElementById('casual-container');
+    const tagsContainer = document.getElementById('casual-tags');
+    const loading = document.getElementById('casual-loading');
+    const error = document.getElementById('casual-error');
+
+    if (!container || !loading) return;
+
+    try {
+      // Try fetching with trailing slash first due to trailingSlash: 'always' config
+      let response = await fetch('/api/casual/');
+      
+      // If 404, try without slash (just in case)
+      if (response.status === 404) {
+        response = await fetch('/api/casual');
+      }
+
+      if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+      
+      const posts = await response.json();
+      allPostsData = posts;
+      
+      // Clear container just in case
+      container.innerHTML = '';
+      
+      if (posts.length === 0) {
+          container.innerHTML = '<div class="text-center opacity-50">No updates found.</div>';
+      }
+
+      // Extract Tags
+      const tagCounts = new Map();
+      posts.forEach((post: any) => {
+        // Remove HTML tags to get raw text for tag extraction
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = post.content;
+        const rawText = tempDiv.textContent || '';
+        
+        // Regex to match tags: #Tag (supports unicode for Chinese etc.)
+        const tags = (rawText.match(/#[\p{L}\p{N}_]+/gu) || []).map((t: string) => t.substring(1));
+        post.tags = tags; 
+        
+        tags.forEach((tag: string) => {
+          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+        });
+      });
+
+      // Render Tags Filter Buttons
+      if (tagCounts.size > 0 && tagsContainer) {
+        const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+        
+        let tagsHtml = `<button data-tag="__all__" class="px-3 py-1 text-sm rounded-full transition-colors bg-primary text-white font-bold">All</button>`;
+        
+        sortedTags.forEach(([tag, count]) => {
+          tagsHtml += `<button data-tag="${tag}" class="px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">#${tag} <span class="opacity-60 text-xs ml-0.5">${count}</span></button>`;
+        });
+        
+        tagsContainer.innerHTML = tagsHtml;
+        tagsContainer.classList.remove('hidden');
+
+        // Add Event Listeners for Filter Buttons
+        tagsContainer.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const target = e.currentTarget as HTMLButtonElement;
+            const tag = target.dataset.tag;
+            setActiveTag(tag || '__all__');
+          });
+        });
+      }
+
+      renderPosts(posts, true);
+
+      loading.style.display = 'none';
+      container.classList.remove('hidden');
+
+    } catch (err) {
+      console.error('Failed to load casual posts:', err);
+      loading.style.display = 'none';
+      if (error) error.classList.remove('hidden');
+    }
+  }
+
+  function setActiveTag(tag: string) {
+      const tagsContainer = document.getElementById('casual-tags');
+      if (!tagsContainer) return;
+
+      // Update UI
+      tagsContainer.querySelectorAll('button').forEach(b => {
+          if (b.dataset.tag === tag) {
+              b.className = 'px-3 py-1 text-sm rounded-full transition-colors bg-primary text-white font-bold';
+          } else {
+              b.className = 'px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300';
+          }
+      });
+      
+      filterPosts(tag === '__all__' ? null : tag);
+  }
+
+  function renderPosts(posts: any[], animate: boolean = false) {
+    const container = document.getElementById('casual-container');
+    if(!container) return;
+    container.innerHTML = '';
+
+    if (posts.length === 0) {
+       container.innerHTML = '<div class="text-center opacity-50 py-8">No posts found with this tag.</div>';
+       return;
+    }
+
+    posts.forEach((post: any) => {
+        const article = document.createElement('article');
+        const animationClass = animate ? 'animate-fade-in' : '';
+        article.className = `relative pl-6 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[2px] before:bg-primary/30 ${animationClass}`;
+        
+        const dateStr = new Date(post.timestamp).toLocaleDateString();
+        
+        let imagesHtml = '';
+        if (post.images && post.images.length > 0) {
+             const gridClass = post.images.length === 1 ? 'grid-cols-1' : 'grid-cols-2';
+             const imgs = post.images.map((img: string) => 
+               `<img src="${img}" alt="" loading="lazy" class="rounded-lg w-full h-auto object-cover max-h-96 border border-gray-100 dark:border-gray-800" />`
+             ).join('');
+             imagesHtml = `<div class="mt-4 grid gap-2 ${gridClass}">${imgs}</div>`;
+        }
+
+        // Clean content: Remove tags (#tag) from display
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = post.content;
+
+        // 1. Remove <a> tags that are hashtags (Telegram usually links tags)
+        tempDiv.querySelectorAll('a').forEach(a => {
+            if (a.textContent && /^#[\p{L}\p{N}_]+$/u.test(a.textContent.trim())) {
+                a.remove();
+            }
+        });
+
+        // 2. Remove plain text hashtags from text nodes
+        const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT);
+        let node;
+        while (node = walker.nextNode()) {
+            if (node.nodeValue) {
+                // Replace #tag with empty string
+                node.nodeValue = node.nodeValue.replace(/#[\p{L}\p{N}_]+/gu, '');
+            }
+        }
+        
+        const contentHtml = tempDiv.innerHTML;
+
+        article.innerHTML = `
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-2 font-mono">
+            <a href="${post.link}" target="_blank" rel="noopener noreferrer" class="hover:underline transition-all hover:text-primary"><time datetime="${post.date}">${dateStr}</time></a>
+          </div>
+          <div class="heti text-base leading-relaxed post-content">${contentHtml}</div>
+          ${imagesHtml}
+        `;
+        
+        container.appendChild(article);
+      });
+  }
+
+  function filterPosts(tag: string | null) {
+    const filtered = tag 
+      ? allPostsData.filter((p: any) => p.tags && p.tags.includes(tag))
+      : allPostsData;
+    renderPosts(filtered, false);
+  }
+
+  // Load on mount
+  loadCasualPosts();
+</script>

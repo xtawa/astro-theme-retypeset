@@ -10,44 +10,38 @@ import ImageZoom from '@/components/Widgets/ImageZoom.astro'
 import MediaEmbed from '@/components/Widgets/MediaEmbed.astro'
 import SoundEffect from '@/components/Widgets/SoundEffect.astro'
 import { themeConfig } from '@/config'
-import Head from '@/layouts/Head.astro'
-import { getPageInfo } from '@/utils/page'
-import '@/styles/comment.css'
-import '@/styles/extension.css'
-import '@/styles/font.css'
+import Head from './Head.astro'
 import '@/styles/global.css'
-import '@/styles/lqip.css'
+import '@/styles/font.css'
 import '@/styles/markdown.css'
 import '@/styles/transition.css'
+import '@/styles/lqip.css'
+import '@/styles/comment.css'
+import '@/styles/extension.css'
 
-interface Props {
-  postTitle?: string
-  postDescription?: string
-  postSlug?: string
-  supportedLangs?: Language[]
-}
+const { description, image, title, post } = Astro.props
+const lang = Astro.currentLocale as Language
+const { reduceMotion } = themeConfig.global
 
-const { postTitle, postDescription, postSlug, supportedLangs = [] } = Astro.props
-const { isPost } = getPageInfo(Astro.url.pathname)
-const fontStyle = themeConfig.global.fontStyle === 'serif' ? 'font-serif' : 'font-sans'
-const MarginBottom = isPost && themeConfig.comment.enabled
-  ? 'mb-10' // Post page with comment
-  : 'mb-12' // Other pages without comment
+// Margin Bottom for Main Content
+const MarginBottom = post ? 'mb-20 lg:mb-30' : 'mb-30 lg:mb-40'
+
+// Supported Languages for Translation Button
+// This usually comes from i18n config or props, here we can use all available locales or just let Button handle it if it has default.
+// Checking Button usage: <Button supportedLangs={supportedLangs} />
+// We need to define supportedLangs.
+import { moreLocales } from '@/config'
+const supportedLangs = moreLocales
 ---
 
-<html
-  lang={Astro.currentLocale}
-  class:list={[
-    fontStyle,
-    isPost ? 'scroll-smooth' : '',
-  ]}
->
-  <Head {postTitle} {postDescription} {postSlug} />
+<!doctype html>
+<html lang={lang} class:list={['scrollbar-hidden', { 'reduce-motion': reduceMotion }]}>
+  <head>
+    <Head title={title} description={description} image={image} post={post} />
+  </head>
   <body>
     <div
-      class="mx-auto max-w-205.848 min-h-vh w-full min-h-dvh"
-      p="x-[min(7.25vw,3.731rem)] y-10"
-      lg="mx-[max(5.75rem,calc(50vw-34.25rem))] my-20 max-w-[min(calc(75vw-16rem),44rem)] min-h-full p-0"
+      class="relative mx-auto max-w-205.848 min-h-vh w-full min-h-dvh px-[min(7.25vw,3.731rem)] py-10 lg:mx-[max(5.75rem,calc(50vw-34.25rem))] lg:my-20 lg:max-w-[min(calc(75vw-16rem),44rem)] lg:min-h-full lg:p-0"
     >
       <Header />
       <Navbar />
