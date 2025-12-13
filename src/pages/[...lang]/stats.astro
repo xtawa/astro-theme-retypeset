@@ -180,7 +180,7 @@ function formatNumber(num: number) {
     }
 
     // Run on initial load
-    initTypewriter();
+    // initTypewriter(); // Removed to prevent double execution with astro:page-load
 
     // Run on view transitions navigation
     document.addEventListener('astro:page-load', initTypewriter);
