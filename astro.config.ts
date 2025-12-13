@@ -1,3 +1,7 @@
+import { fileURLToPath } from 'node:url'
+import { getCollection } from 'astro:content'
+import fs from 'node:fs/promises'
+import lunr from 'lunr'
 import mdx from '@astrojs/mdx'
 import partytown from '@astrojs/partytown'
 import sitemap from '@astrojs/sitemap'
@@ -25,6 +29,83 @@ const { imageHostURL } = themeConfig.preload ?? {}
 const imageConfig = imageHostURL
   ? { image: { domains: [imageHostURL], remotePatterns: [{ protocol: 'https' }] } }
   : {}
+
+// Custom Astro Integration for Lunr.js search index generation
+function lunrSearchIntegration() {
+  return {
+    name: 'lunr-search-integration',
+    hooks: {
+      'build:done': async ({ logger }) => {
+        logger.info('Generating Lunr.js search index...');
+
+        // Ensure these imports are correctly resolved by Astro's build system
+        // getCollection can only be used in Astro files or build-time integrations
+        const { getCollection } = await import('astro:content');
+
+        const allPosts = await getCollection('posts');
+        const allAbouts = await getCollection('about');
+        const allCasual = await getCollection('casual');
+
+        const documents = [];
+
+        // Process posts
+        for (const post of allPosts) {
+          documents.push({
+            id: post.id,
+            title: post.data.title,
+            content: post.body,
+            url: `/posts/${post.slug}`,
+            lang: post.slug.split('/')[0],
+          });
+        }
+
+        // Process about pages
+        for (const about of allAbouts) {
+          documents.push({
+            id: about.id,
+            title: about.data.title,
+            content: about.body,
+            url: `/about/${about.slug}`,
+            lang: about.slug.split('/')[0],
+          });
+        }
+
+        // Process casual content
+        for (const casual of allCasual) {
+          documents.push({
+            id: casual.id,
+            title: casual.data.title,
+            content: casual.body,
+            url: `/casual/${casual.slug}`,
+            lang: casual.slug.split('/')[0],
+          });
+        }
+
+        const idx = lunr(function () {
+          this.ref('id');
+          this.field('title', { boost: 10 });
+          this.field('content');
+          this.field('lang');
+
+          documents.forEach(function (doc) {
+            this.add(doc);
+          }, this);
+        });
+
+        const serializedIdx = JSON.stringify(idx);
+        const serializedDocs = JSON.stringify(documents);
+
+        const publicDir = fileURLToPath(new URL('./public', import.meta.url));
+        await fs.mkdir(publicDir, { recursive: true });
+
+        await fs.writeFile(new URL('./search-index.json', publicDir), serializedIdx);
+        await fs.writeFile(new URL('./search-documents.json', publicDir), serializedDocs);
+
+        logger.info('Lunr.js search index and documents generated successfully!');
+      },
+    },
+  };
+}
 
 export default defineConfig({
   adapter: vercel(),
@@ -61,6 +142,7 @@ export default defineConfig({
       JavaScript: true,
       SVG: false,
     }),
+    lunrSearchIntegration(),
   ],
   markdown: {
     remarkPlugins: [

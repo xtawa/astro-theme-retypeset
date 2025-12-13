@@ -23,69 +23,97 @@ const currentUI = ui[currentLang as keyof typeof ui] ?? {}
   </div>
 
   <div class="max-w-[var(--content-width)] mx-auto px-4 sm:px-0">
-    <div id="search"></div>
+    <div class="mb-8">
+      <input
+        type="text"
+        id="lunr-search-input"
+        placeholder="Type to search..."
+        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-primary"
+      />
+    </div>
+
+    <div id="lunr-search-results">
+      <p id="lunr-no-results" class="hidden text-gray-500">No results found.</p>
+    </div>
   </div>
 
-  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-  <script src="/pagefind/pagefind-ui.js" is:inline></script>
-
   <script is:inline>
-    window.addEventListener('DOMContentLoaded', () => {
-      new PagefindUI({ 
-        element: "#search", 
-        showSubResults: true,
-        showImages: false,
-        translations: {
-            placeholder: "Type to search...",
-            clear_search: "",
-            load_more: "Load more results",
-            search_label: "Search this site",
-            filters_label: "Filters",
-            zero_results: "No results for [SEARCH_TERM]",
-            many_results: "[COUNT] results for [SEARCH_TERM]",
-            one_result: "[COUNT] result for [SEARCH_TERM]",
-            alt_search: "No results for [SEARCH_TERM]. Showing results for [DIFFERENT_TERM] instead",
-            search_suggestion: "Searching for [SEARCH_TERM]",
-            searching: "Searching for [SEARCH_TERM]..."
+    // Load lunr.js dynamically as it's a client-side dependency
+    const loadScript = (src) => {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    };
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Dynamically load lunr.js
+      await loadScript('https://unpkg.com/lunr/lunr.min.js'); // Using unpkg for simplicity, can be bundled
+      
+      const searchInput = document.getElementById('lunr-search-input');
+      const searchResults = document.getElementById('lunr-search-results');
+      const noResultsMessage = document.getElementById('lunr-no-results');
+
+      let idx;
+      let documents;
+
+      // Fetch the search index and documents
+      try {
+        const [indexResponse, docsResponse] = await Promise.all([
+          fetch('/search-index.json'),
+          fetch('/search-documents.json')
+        ]);
+        
+        if (!indexResponse.ok || !docsResponse.ok) {
+          throw new Error('Failed to load search index or documents.');
         }
+
+        const indexData = await indexResponse.json();
+        documents = await docsResponse.json();
+
+        // Rehydrate Lunr.js index
+        idx = lunr.Index.load(indexData);
+      } catch (error) {
+        console.error('Error loading Lunr.js index:', error);
+        searchInput.placeholder = 'Search not available.';
+        searchInput.disabled = true;
+        return;
+      }
+
+      searchInput.addEventListener('input', (event) => {
+        const query = event.target.value;
+        searchResults.innerHTML = ''; // Clear previous results
+        noResultsMessage.classList.add('hidden');
+
+        if (query.length < 2) { // Require at least 2 characters for search
+          return;
+        }
+
+        const results = idx.search(query);
+
+        if (results.length === 0) {
+          noResultsMessage.classList.remove('hidden');
+          return;
+        }
+
+        results.forEach(result => {
+          const doc = documents.find(d => d.id === result.ref);
+          if (doc) {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'p-4 mb-4 border border-gray-200 rounded';
+            resultDiv.innerHTML = `
+              <h3 class="text-xl font-bold mb-2">
+                <a href="${doc.url}" class="text-primary hover:underline">${doc.title}</a>
+              </h3>
+              <p class="text-gray-700 text-sm">${doc.content.substring(0, 200)}...</p>
+            `;
+            searchResults.appendChild(resultDiv);
+          }
+        });
       });
     });
   </script>
-
-  <style is:global>
-    :root {
-      --pagefind-ui-scale: 0.9;
-      --pagefind-ui-primary: var(--md-sys-color-primary, #6750A4);
-      --pagefind-ui-text: var(--md-sys-color-on-background, #1c1b1f);
-      --pagefind-ui-background: transparent;
-      --pagefind-ui-border: var(--md-sys-color-outline-variant, #cac4d0);
-      --pagefind-ui-tag: var(--md-sys-color-secondary-container, #e8def8);
-      --pagefind-ui-border-width: 1px;
-      --pagefind-ui-border-radius: 4px;
-      --pagefind-ui-image-border-radius: 4px;
-      --pagefind-ui-image-box-ratio: 3 / 2;
-      --pagefind-ui-font: "Snell-Black", "EarlySummer-Subset", "EarlySummer", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    }
-    
-    .pagefind-ui__search-input {
-      background-color: transparent !important;
-      border-bottom: 2px solid var(--md-sys-color-primary, #6750A4) !important;
-      border-top: none !important;
-      border-left: none !important;
-      border-right: none !important;
-      border-radius: 0 !important;
-      padding-left: 0 !important;
-      font-weight: bold;
-    }
-    
-    .pagefind-ui__search-input svg,
-    .pagefind-ui__search-input::before,
-    .pagefind-ui__search-input::after {
-      display: none !important;
-    }
-    
-    .pagefind-ui__result-excerpt {
-        font-family: var(--pagefind-ui-font);
-    }
-  </style>
 </Layout>
