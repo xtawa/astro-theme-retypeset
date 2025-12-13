@@ -49,7 +49,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^6.6.1",
     "@astrojs/check": "^0.9.6",
-    "@types/lunr": "^2.3.7",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^25.0.0",
     "@types/node-fetch": "^2.6.13",
@@ -64,7 +63,6 @@
     "fast-glob": "^3.3.3",
     "https-proxy-agent": "^7.0.6",
     "lint-staged": "^16.2.7",
-    "lunr": "^2.3.9",
     "node-fetch": "^3.3.2",
     "pagefind": "^1.4.0",
     "playwright": "^1.57.0",
