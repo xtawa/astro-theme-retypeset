@@ -28,6 +28,20 @@ Retypeset is a static blog theme based on the [Astro](https://astro.build/) fram
 - Responsive design
 - Comment system
 
+## Modifications
+
+This version includes several enhancements over the original Retypeset theme:
+
+- **Casual Page (`/casual`)**: Fetches and displays real-time content from a public Telegram Channel.
+- **Statistics Page (`/stats`)**: A dashboard featuring:
+    - **Timeline**: Chronological archive of all posts.
+    - **Word Count**: Total articles and words (CJK supported).
+    - **Top Tags**: Most frequently used tags.
+    - **Typewriter Effect**: Displays random quotes from your articles (tagged with `#好词好句`).
+- **Search**: Built-in full-text search powered by Pagefind (no external service required).
+- **Post Copyright**: Automatically appends copyright information and license to the end of every post.
+- **Deployment Ready**: Pre-configured with `@astrojs/vercel` for easy deployment.
+
 ## Typewriter Effect
 
 The Statistics page (`/stats`) features a typewriter effect that displays a random sentence from your blog posts.
@@ -68,7 +82,24 @@ The Statistics page (`/stats`) features a typewriter effect that displays a rand
    ```
 
 3. Refer to the [Theme Guide](https://retypeset.radishzz.cc/en/posts/theme-guide/) to customize your blog and create new posts.
-4. Refer to the [Astro Deployment Guides](https://docs.astro.build/en/guides/deploy/) to deploy your blog to Netlify, Vercel, or other platforms.
+
+## Deployment
+
+This project is configured for **Vercel** out of the box.
+
+### 1. Deploy to Vercel
+
+1.  Push your code to a GitHub repository.
+2.  Import the project into Vercel.
+3.  Vercel will detect Astro and configure the build settings automatically.
+
+### 2. Environment Variables
+
+For the **Casual Page** to work, you must set the following environment variable in Vercel project settings:
+
+-   `CASUAL_TELEGRAM_CHANNEL`: Your public Telegram channel username (e.g., `my_blog_channel`).
+
+**Note**: Vercel's serverless functions can access Telegram directly, so `HTTPS_PROXY` is usually **not** required for production. However, for local development in restricted regions, you may need to set `HTTPS_PROXY` in your local `.env` or shell.
 
 &emsp;[![Deploy to Netlify](assets/images/deploy-netlify.svg)](https://app.netlify.com/start) [![Deploy to Vercel](assets/images/deploy-vercel.svg)](https://vercel.com/new)
 
