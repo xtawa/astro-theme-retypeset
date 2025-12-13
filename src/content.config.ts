@@ -31,6 +31,7 @@ const about = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/about' }),
   schema: z.object({
     lang: z.enum(['', ...allLocales]).optional().default(''),
+    title: z.string().optional(),
   }),
 })
 
@@ -38,6 +39,7 @@ const casual = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/casual' }),
   schema: z.object({
     lang: z.enum(['', ...allLocales]).optional().default(''),
+    title: z.string().optional(),
   }),
 })
 
