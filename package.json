@@ -6,7 +6,7 @@
   "repository": "https://github.com/radishzzz/astro-theme-retypeset",
   "scripts": {
     "dev": "astro check && astro dev",
-    "build": "astro check && astro build && pnpm apply-lqip && pagefind --site dist",
+    "build": "astro check && astro build && pnpm apply-lqip && pagefind --site dist --output-path dist/client/pagefind",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
