@@ -30,22 +30,35 @@ export function getPlainContent(str: string): string {
 }
 
 export function getRandomSentence(posts: any[]): { text: string, title: string, link: string } {
-  if (!posts || posts.length === 0) return { text: '', title: '', link: '' }
+  const defaultQuote = {
+    text: "当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。",
+    title: "社区",
+    link: "/"
+  }
 
-  // 1. Pick random post
-  const randomPost = posts[Math.floor(Math.random() * posts.length)]
+  if (!posts || posts.length === 0) return defaultQuote
+
+  // 1. Filter posts with specific tag
+  const targetTag = "好词好句"
+  const targetPosts = posts.filter(post => post.data.tags && post.data.tags.includes(targetTag))
+
+  // If no posts with tag found, use default
+  if (targetPosts.length === 0) {
+    return defaultQuote
+  }
+
+  // 2. Pick random post from filtered list
+  const randomPost = targetPosts[Math.floor(Math.random() * targetPosts.length)]
   const content = getPlainContent(randomPost.body)
 
-  // 2. Split into sentences (supports English and CJK punctuation)
-  // Split by: . ! ? 。 ！ ？ and filter empty
+  // 3. Split into sentences (supports English and CJK punctuation)
   const sentences = content
     .split(/([.!?。！？])/)
     .reduce((acc: string[], part, i, arr) => {
       if (i % 2 === 0) {
-        // This is the sentence part
         const punctuation = arr[i + 1] || ''
         const sentence = (part + punctuation).trim()
-        if (sentence.length > 5 && sentence.length < 100) { // Filter too short or too long
+        if (sentence.length > 5 && sentence.length < 100) {
           acc.push(sentence)
         }
       }
@@ -53,12 +66,10 @@ export function getRandomSentence(posts: any[]): { text: string, title: string, 
     }, [])
 
   if (sentences.length === 0) {
-    // If no valid sentences found in this post, try again (recursive) or fallback
-    // For safety, just return title if parsing fails
-    return { text: randomPost.data.title, title: randomPost.data.title, link: randomPost.id }
+    return defaultQuote
   }
 
-  // 3. Pick random sentence
+  // 4. Pick random sentence
   const randomSentence = sentences[Math.floor(Math.random() * sentences.length)]
   
   return {

@@ -152,10 +152,10 @@ const { Content } = casualEntry ? await render(casualEntry) : { Content: null }
       if (tagCounts.size > 0) {
         const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
         
-        let tagsHtml = `<button data-tag="__all__" class="px-3 py-1 text-sm rounded-full transition-colors bg-primary text-white font-bold">All</button>`;
+        let tagsHtml = `<button data-tag="__all__" class="px-4 py-2 text-sm rounded-full transition-all bg-primary text-white border border-primary font-medium shadow-sm">All</button>`;
         
         sortedTags.forEach(([tag, count]) => {
-          tagsHtml += `<button data-tag="${tag}" class="px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">#${tag} <span class="opacity-60 text-xs ml-0.5">${count}</span></button>`;
+          tagsHtml += `<button data-tag="${tag}" class="px-4 py-2 text-sm rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:text-primary transition-all text-gray-600 dark:text-gray-300">#${tag} <span class="opacity-60 text-xs ml-1">${count}</span></button>`;
         });
         
         tagsContainer.innerHTML = tagsHtml;
@@ -179,9 +179,9 @@ const { Content } = casualEntry ? await render(casualEntry) : { Content: null }
       if (!tagsContainer) return;
       tagsContainer.querySelectorAll('button').forEach(b => {
           if (b.dataset.tag === tag) {
-              b.className = 'px-3 py-1 text-sm rounded-full transition-colors bg-primary text-white font-bold';
+              b.className = 'px-4 py-2 text-sm rounded-full transition-all bg-primary text-white border border-primary font-medium shadow-sm';
           } else {
-              b.className = 'px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300';
+              b.className = 'px-4 py-2 text-sm rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:text-primary transition-all text-gray-600 dark:text-gray-300';
           }
       });
       

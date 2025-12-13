@@ -142,29 +142,51 @@ function formatNumber(num: number) {
 </Layout>
 
 <script define:vars={{ quote: randomQuote.text }}>
-    const textElement = document.getElementById('typewriter-text');
-    const sourceElement = document.getElementById('typewriter-source');
-    const text = quote || "Reading is a journey.";
-    
-    let index = 0;
-    
-    function type() {
-        if (!textElement) return;
+    let typewriterTimeout;
+
+    function initTypewriter() {
+        const textElement = document.getElementById('typewriter-text');
+        const sourceElement = document.getElementById('typewriter-source');
         
-        if (index < text.length) {
-            textElement.textContent += text.charAt(index);
-            index++;
-            // Randomize typing speed for realism (30ms to 100ms)
-            const delay = Math.random() * 70 + 30; 
-            setTimeout(type, delay);
-        } else {
-            // Fade in source after typing
-            if (sourceElement) {
-                sourceElement.classList.remove('opacity-0');
+        // If elements don't exist (e.g. navigated away), stop
+        if (!textElement || !sourceElement) return;
+
+        // Reset
+        clearTimeout(typewriterTimeout);
+        textElement.textContent = '';
+        sourceElement.classList.add('opacity-0');
+        
+        const text = quote || "Reading is a journey.";
+        let index = 0;
+        
+        function type() {
+            // Check existence again in case user navigated away during typing
+            if (!document.getElementById('typewriter-text')) return;
+
+            if (index < text.length) {
+                textElement.textContent += text.charAt(index);
+                index++;
+                const delay = Math.random() * 70 + 30; 
+                typewriterTimeout = setTimeout(type, delay);
+            } else {
+                if (sourceElement) {
+                    sourceElement.classList.remove('opacity-0');
+                }
             }
         }
+
+        // Start typing
+        typewriterTimeout = setTimeout(type, 500);
     }
 
-    // Start typing after a short delay
-    setTimeout(type, 500);
+    // Run on initial load
+    initTypewriter();
+
+    // Run on view transitions navigation
+    document.addEventListener('astro:page-load', initTypewriter);
+    
+    // Optional: Cleanup on page leave to prevent memory leaks or errors
+    document.addEventListener('astro:before-swap', () => {
+        clearTimeout(typewriterTimeout);
+    });
 </script>

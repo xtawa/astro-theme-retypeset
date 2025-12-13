@@ -28,6 +28,14 @@ Retypeset is a static blog theme based on the [Astro](https://astro.build/) fram
 - Responsive design
 - Comment system
 
+## Typewriter Effect
+
+The Statistics page (`/stats`) features a typewriter effect that displays a random sentence from your blog posts.
+
+- **How it works**: It automatically extracts sentences from any post tagged with `好词好句` (or `Good Quotes`).
+- **Default**: If no posts have this tag, it will display a default inspirational quote.
+- **Customization**: Simply add the tag `好词好句` to any Markdown post frontmatter to include its content in the quote pool.
+
 ## Performance
 
 <br>
