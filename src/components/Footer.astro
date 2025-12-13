@@ -2,6 +2,7 @@
 import { themeConfig } from '@/config'
 import { getLangFromPath } from '@/i18n/lang'
 import { getLocalizedPath } from '@/i18n/path'
+import { ui } from '@/i18n/ui'
 
 const { author } = themeConfig.site
 const { links, startYear } = themeConfig.footer
@@ -12,6 +13,8 @@ const year = Number(startYear) === currentYear
   : `${startYear}-${currentYear}`
 
 const currentLang = getLangFromPath(Astro.url.pathname)
+const currentUI = ui[currentLang as keyof typeof ui] ?? {}
+
 const socialLinks = links.map(({ name, url }) => {
   const isRSS = url === '/atom.xml' || url === '/rss.xml'
   const isEmail = /^[\w.-]+@[\w.-]+\.[a-z]{2,}$/i.test(url)
@@ -56,12 +59,13 @@ const socialLinks = links.map(({ name, url }) => {
   lg="uno-desktop-column bottom-20 text-3.5"
 >
   <p>
-    {socialLinks.map((link, index) => (
+    {socialLinks.map((link) => (
       <>
         <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" {...link}>{link.name}</a>
-        {index < socialLinks.length - 1 && '/'}
+        {'/'}
       </>
     ))}
+    <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" href={getLocalizedPath('/stats/', currentLang)}>{currentUI.stats}</a>
   </p>
 
   <p>
