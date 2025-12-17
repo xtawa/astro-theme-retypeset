@@ -1,11 +1,12 @@
 ---
-title: 魔改Retypeset主题
+title: 向您介绍 PaperWeave 主题
 published: 2025-12-13T21:25:00
-description: 经过修改的 Retypeset 主题，增加搜索、说说、统计页面
+description: 一款经过修改的 Retypeset 主题，增加搜索、说说、统计等功能
 updated: ""
 tags:
   - Retypeset
   - blog
+  - PaperWeave
 draft: false
 pin: 0
 toc: true
@@ -14,8 +15,7 @@ abbrlink: ""
 share: true
 状态: 已完成
 ---
-# PaperWeave
-UI Screenshots preview
+预览
 
 ==Homepage==
 
@@ -36,6 +36,7 @@ UI Screenshots preview
 由于在魔改期间未及时进行记录，如果你喜欢的话可以直接fork我的仓库
 
 如果能点个 **🌟Star** 的话就更好啦😊谢谢你
+
 ## Github地址
 
 [点此访问](https://github.com/xtawa/astro-theme-retypeset/tree/master)
