@@ -1,7 +1,7 @@
 ---
 title: 向您介绍 PaperWeave 主题
 published: 2025-12-13T21:25:00
-description: 一款经过修改的 Retypeset 主题，增加搜索、说说、统计等功能
+description: 一款 Astro 主题，基于 Retypeset 进行二次修改，增加搜索、说说、统计等功能
 updated: ""
 tags:
   - Retypeset
@@ -15,20 +15,14 @@ abbrlink: ""
 share: true
 状态: 已完成
 ---
-预览
-
-==Homepage==
-
+## 界面预览
+主页
 ![homepage.png](https://dav1.xtyin.com/homepage.png)
-
-==Casual Page==
-
+随心说
 ![casual.png](https://dav1.xtyin.com/casual.png)
-
-==Statistics Page==
-
+统计
 ![stats.png](https://dav1.xtyin.com/stats.png)
-
+支持页面自由启用/禁用(ToDo)
 ## 介绍
 
 基于 Retypeset 主题深度定制。为喜欢记录生活的博主增加了动态内容流和丰富的数据展示功能。
@@ -103,3 +97,11 @@ The Statistics page (`/stats`) features a typewriter effect that displays a rand
 - **How it works**: It automatically extracts sentences from any post tagged with `好词好句` 
 - **Default**: If no posts have this tag, it will display a default inspirational quote.
 - **Customization**: Simply add the tag `好词好句` to any Markdown post frontmatter to include its content in the quote pool.
+
+## To-Do
+- [ ] 友链页
+- [ ] 个人CV
+- [ ] 页面自由显示/隐藏
+- [ ] 修复打字机卡顿效果
+- [ ] 后台功能添加
+- [ ] Elog 支持
