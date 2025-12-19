@@ -205,6 +205,94 @@ For the **Casual Page** to work, you must set the following environment variable
 
 Retypeset releases [new features](https://github.com/radishzzz/astro-theme-retypeset/issues/18) from time to time. Simply run `pnpm update-theme` to update the theme. If you encounter merge conflicts, please refer to [this video](https://youtu.be/lz5OuKzvadQ?si=sH_ALNgqxrYqNVQT) for manual resolution.
 
+## Admin Dashboard
+
+The theme includes a built-in Admin Dashboard at `/admin` to manage your content directly from the browser.
+
+### Authentication Methods
+
+The admin dashboard supports two authentication methods:
+
+#### Method 1: GitHub OAuth (Recommended)
+
+OAuth provides a more secure and seamless login experience.
+
+**Setup Steps:**
+
+1. **Create a GitHub OAuth App**:
+   - Go to GitHub Settings → Developer settings → [OAuth Apps](https://github.com/settings/developers)
+   - Click "New OAuth App"
+   - Fill in the details:
+     - **Application name**: Your Blog Admin
+     - **Homepage URL**: `https://your-site.com`
+     - **Authorization callback URL**: `https://your-site.com/api/auth/callback`
+   - Click "Register application"
+   - Copy your **Client ID** and **Client Secret**
+
+2. **Configure Environment Variables** (in Vercel or your hosting platform):
+   ```bash
+   GITHUB_CLIENT_ID=your_client_id_here
+   GITHUB_CLIENT_SECRET=your_client_secret_here
+   PUBLIC_GITHUB_CLIENT_ID=your_client_id_here  # Same as above
+   
+   # Optional: Pre-configure repository
+   ADMIN_REPO_OWNER=your_github_username
+   ADMIN_REPO_NAME=your_repo_name
+   ```
+
+3. **Deploy** and visit `/admin` - you'll see a "Login with GitHub OAuth" button
+
+#### Method 2: Personal Access Token
+
+If you prefer not to set up OAuth, you can use a Personal Access Token.
+
+**Setup Steps:**
+
+1. Generate a **GitHub Personal Access Token (Classic)** with `repo` scope:
+   - Go to GitHub Settings → Developer settings → [Personal access tokens](https://github.com/settings/tokens)
+   - Click "Generate new token (classic)"
+   - Check the `repo` scope
+   - Copy the generated token
+
+2. Navigate to `/admin` and enter:
+   - Your token
+   - Repository owner (username)
+   - Repository name
+
+### Features
+
+-   **📝 Articles**: Create, edit, and delete markdown posts in `src/content/posts`
+-   **👥 Friends**: Manage friend links in `src/friends.ts` with a simple UI
+-   **⚙️ Config**: Edit `src/config.ts` directly from the browser
+
+### Vercel Environment Variables
+
+For the best experience on Vercel, configure these environment variables:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GITHUB_CLIENT_ID` | Optional | GitHub OAuth Client ID for admin login |
+| `GITHUB_CLIENT_SECRET` | Optional | GitHub OAuth Client Secret (keep this secret!) |
+| `PUBLIC_GITHUB_CLIENT_ID` | Optional | Same as GITHUB_CLIENT_ID (for client-side) |
+| `ADMIN_REPO_OWNER` | Optional | Pre-configure repository owner |
+| `ADMIN_REPO_NAME` | Optional | Pre-configure repository name |
+| `CASUAL_TELEGRAM_CHANNEL` | Required* | Telegram channel for Casual page |
+
+*Required only if using the Casual page feature.
+
+### Security Notes
+
+⚠️ **Important Security Considerations:**
+
+- Set `pages.admin: false` in `src/config.ts` to hide the admin link from navigation
+- The `/admin` path is still accessible by direct URL
+- OAuth tokens and PATs have full `repo` access to your repository
+- All changes are committed directly to your GitHub repository
+- Consider using branch protection rules for your main branch
+- For production sites, consider implementing additional authentication layers
+
+**Note**: Changes made in the Admin Dashboard are committed directly to your GitHub repository with descriptive commit messages.
+
 ## Credits
 
 - [Typography](https://github.com/moeyua/astro-theme-typography)

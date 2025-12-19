@@ -32,6 +32,36 @@ This document serves as a checklist to review the display effects and functional
 
 
 
+## Admin Page
+- [ ] **Admin Functionality**
+    - [ ] Verify `/admin` route is accessible.
+    - [ ] **OAuth Authentication**
+        - [ ] Set up GitHub OAuth App with correct callback URL.
+        - [ ] Configure `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in Vercel.
+        - [ ] Test OAuth login flow (should redirect to GitHub for authorization).
+        - [ ] Verify successful OAuth callback and token retrieval.
+    - [ ] **Environment Variables**
+        - [ ] Configure `ADMIN_REPO_OWNER` and `ADMIN_REPO_NAME` in Vercel.
+        - [ ] Verify repository fields are pre-filled and disabled when env vars are set.
+    - [ ] **Personal Access Token Login**
+        - [ ] Test manual login with GitHub PAT.
+        - [ ] Verify localStorage saves credentials correctly.
+    - [ ] **Articles Management**
+        - [ ] Test fetching and listing articles from GitHub.
+        - [ ] Test creating a new article.
+        - [ ] Test editing an existing article.
+        - [ ] Test deleting an article.
+        - [ ] Verify commit messages are descriptive.
+    - [ ] **Friends Management**
+        - [ ] Test fetching friends data.
+        - [ ] Test adding a friend (both EN and ZH).
+        - [ ] Test removing a friend.
+        - [ ] Test saving changes commits to GitHub correctly.
+    - [ ] **Config Management**
+        - [ ] Test fetching config file.
+        - [ ] Test editing and saving config.
+        - [ ] Verify syntax is preserved after save.
+
 ## Language & Routing
 
 - [ ] **Default Language (Chinese)**

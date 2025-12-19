@@ -219,7 +219,7 @@ export const themeConfig: ThemeConfig = {
     about: true,
     stats: true,
     friends: true,
-
+    admin: false, // Set to true to show admin link in navbar (not recommended for public sites)
   },
   // PAGE VISIBILITY SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END
 }

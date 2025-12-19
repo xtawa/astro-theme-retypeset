@@ -110,6 +110,6 @@ export interface ThemeConfig {
     about?: boolean
     stats?: boolean
     friends?: boolean
-
+    admin?: boolean
   }
 }

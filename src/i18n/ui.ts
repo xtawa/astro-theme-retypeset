@@ -11,6 +11,7 @@ interface Translation {
   search: string
   stats: string
   friends: string
+  admin: string
 
   toc: string
 }
@@ -27,6 +28,7 @@ export const ui: Record<Language, Translation> = {
     search: 'Search',
     stats: 'Statistics',
     friends: 'Friends',
+    admin: 'Admin',
 
     toc: 'Table of Contents',
   },
@@ -41,6 +43,7 @@ export const ui: Record<Language, Translation> = {
     search: '搜索',
     stats: 'Statistics',
     friends: '友链',
+    admin: '管理',
 
     toc: '目录',
   },
