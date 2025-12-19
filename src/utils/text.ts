@@ -31,16 +31,18 @@ export function getPlainContent(str: string): string {
 
 export function getRandomSentence(posts: any[]): { text: string, title: string, link: string } {
   const defaultQuote = {
-    text: "当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。",
-    title: "社区",
+    text: "When the first satellite flew out of the atmosphere, we thought we would conquer the universe one day.",
+    title: "Community",
     link: "/"
   }
 
   if (!posts || posts.length === 0) return defaultQuote
 
-  // 1. Filter posts with specific tag
-  const targetTag = "好词好句"
-  const targetPosts = posts.filter(post => post.data.tags && post.data.tags.includes(targetTag))
+  // 1. Filter posts with specific tags (supports both Chinese and English)
+  const targetTags = ["好词好句", "Good Sentences"]
+  const targetPosts = posts.filter(post => 
+    post.data.tags && post.data.tags.some((tag: string) => targetTags.includes(tag))
+  )
 
   // If no posts with tag found, use default
   if (targetPosts.length === 0) {
