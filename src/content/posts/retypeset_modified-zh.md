@@ -10,7 +10,7 @@ tags:
 draft: false
 pin: 0
 toc: true
-lang: en
+lang: zh
 abbrlink: retypeset_modified
 share: true
 状态: 已完成
