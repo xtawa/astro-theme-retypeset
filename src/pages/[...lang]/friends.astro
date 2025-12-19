@@ -2,7 +2,7 @@
 import { allLocales } from '@/config'
 import { getLangRouteParam, getLangFromLocale } from '@/i18n/lang'
 import Layout from '@/layouts/Layout.astro'
-import { friends } from '@/friends'
+import { friendsData } from '@/friends'
 import { ui } from '@/i18n/ui'
 
 export async function getStaticPaths() {
@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 const currentLang = getLangFromLocale(Astro.currentLocale)
 const currentUI = ui[currentLang as keyof typeof ui] ?? {}
+const friends = friendsData[currentLang]
 ---
 
 <Layout title={currentUI.friends}>

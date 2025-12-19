@@ -1,5 +1,6 @@
 import type { ThemeConfig } from '@/types'
 
+// Config file
 export const themeConfig: ThemeConfig = {
   // SITE INFORMATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> START
   site: {
@@ -61,7 +62,7 @@ export const themeConfig: ThemeConfig = {
     locale: 'zh', // de | en | es | fr | ja | ko | pl | pt | ru | zh | zh-tw
     // more languages
     // not fill in the locale code above again, can be an empty array []
-    moreLocales: ['en', 'es', 'ja', 'ru', 'zh-tw'], // ['de', 'en', 'es', 'fr', 'ja', 'ko', 'pl', 'pt', 'ru', 'zh', 'zh-tw']
+    moreLocales: ['en'], // ['de', 'en', 'es', 'fr', 'ja', 'ko', 'pl', 'pt', 'ru', 'zh', 'zh-tw']
     // post font style
     fontStyle: 'sans', // sans | serif
     // post date format
@@ -72,6 +73,8 @@ export const themeConfig: ThemeConfig = {
     katex: true, // true | false
     // reduce motion
     reduceMotion: false, // true | false
+    // show tags on homepage
+    showTagsOnHome: true, // true | false
   },
   // GLOBAL SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END
 
@@ -211,11 +214,12 @@ export const themeConfig: ThemeConfig = {
   pages: {
     posts: true,
     casual: true,
-    tags: true,
+    tags: false,
     search: true,
     about: true,
     stats: true,
     friends: true,
+
   },
   // PAGE VISIBILITY SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END
 }

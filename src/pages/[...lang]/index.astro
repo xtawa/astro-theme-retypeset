@@ -1,9 +1,10 @@
 ---
 import PostList from '@/components/PostList.astro'
-import { allLocales } from '@/config'
+import TagList from '@/components/TagList.astro'
+import { allLocales, themeConfig } from '@/config'
 import { getLangFromLocale, getLangRouteParam } from '@/i18n/lang'
 import Layout from '@/layouts/Layout.astro'
-import { getPinnedPosts, getPostsByYear } from '@/utils/content'
+import { getAllTags, getPinnedPosts, getPostsByYear } from '@/utils/content'
 
 export async function getStaticPaths() {
   return allLocales.map(lang => ({
@@ -14,9 +15,18 @@ export async function getStaticPaths() {
 const currentLang = getLangFromLocale(Astro.currentLocale)
 const pinnedPosts = await getPinnedPosts(currentLang)
 const postsByYear = await getPostsByYear(currentLang)
+const showTagsOnHome = themeConfig.global.showTagsOnHome && !(themeConfig.pages?.tags ?? true)
+const allTags = showTagsOnHome ? await getAllTags(currentLang) : []
 ---
 
 <Layout>
+  <!-- Tags -->
+  {showTagsOnHome && (
+    <section class="mb-7.5">
+      <TagList tags={allTags} lang={currentLang} scrollable={true} />
+    </section>
+  )}
+
   <!-- Pinned Posts -->
   {pinnedPosts.length > 0 && (
     <section class="mb-7.5">

@@ -6,23 +6,103 @@ interface Props {
   tags: string[]
   currentTag?: string
   lang: Language
+  scrollable?: boolean
 }
 
-const { tags, currentTag = '', lang } = Astro.props
+const { tags, currentTag = '', lang, scrollable = false } = Astro.props
 ---
 
-<div class="no-heti flex flex-wrap gap-3">
-  {tags.map(tag => (
-    <a
-      href={getTagPath(tag, lang)}
-      class:list={[
-        'px-4 py-2 text-sm rounded-full transition-all shadow-sm border font-medium',
-        currentTag === tag
-          ? 'bg-primary text-white border-primary'
-          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-primary/50 hover:text-primary',
-      ]}
+<div class:list={['relative', scrollable ? 'group' : '']}>
+  {scrollable && (
+    <button
+      id="tag-scroll-left"
+      class="absolute left-0 top-0 z-10 h-full w-12 flex items-center justify-center bg-gradient-to-r from-background to-transparent opacity-0 transition-opacity duration-300 disabled:pointer-events-none disabled:opacity-0 group-hover:opacity-100"
+      aria-label="Scroll left"
     >
-      {tag}
-    </a>
-  ))}
+      <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" class="text-primary">
+        <path fill="currentColor" d="M15.41 7.41L14 6l-6 6l6 6l1.41-1.41L10.83 12z"/>
+      </svg>
+    </button>
+  )}
+
+  <div
+    id="tag-container"
+    class:list={[
+      'no-heti flex gap-3 transition-all',
+      scrollable ? 'flex-nowrap overflow-x-auto scrollbar-hidden scroll-smooth px-2' : 'flex-wrap',
+    ]}
+  >
+    {tags.map(tag => (
+      <a
+        href={getTagPath(tag, lang)}
+        class:list={[
+          'px-4 py-2 text-sm rounded-full transition-all shadow-sm border font-medium whitespace-nowrap',
+          currentTag === tag
+            ? 'bg-primary text-white border-primary'
+            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-primary/50 hover:text-primary',
+        ]}
+      >
+        {tag}
+      </a>
+    ))}
+  </div>
+
+  {scrollable && (
+    <button
+      id="tag-scroll-right"
+      class="absolute right-0 top-0 z-10 h-full w-12 flex items-center justify-center bg-gradient-to-l from-background to-transparent opacity-0 transition-opacity duration-300 disabled:pointer-events-none disabled:opacity-0 group-hover:opacity-100"
+      aria-label="Scroll right"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" class="text-primary">
+        <path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </button>
+  )}
 </div>
+
+{scrollable && (
+  <script>
+    const container = document.getElementById('tag-container')
+    const leftBtn = document.getElementById('tag-scroll-left')
+    const rightBtn = document.getElementById('tag-scroll-right')
+
+    if (container && leftBtn && rightBtn) {
+      const scrollAmount = 200
+
+      const updateButtons = () => {
+        const { scrollLeft, scrollWidth, clientWidth } = container
+        // Show/hide left button
+        if (scrollLeft <= 0) {
+          leftBtn.classList.add('hidden')
+        } else {
+          leftBtn.classList.remove('hidden')
+        }
+        
+        // Show/hide right button
+        if (scrollLeft + clientWidth >= scrollWidth - 1) {
+          rightBtn.classList.add('hidden')
+        } else {
+          rightBtn.classList.remove('hidden')
+        }
+      }
+
+      leftBtn.addEventListener('click', () => {
+        container.scrollLeft -= scrollAmount
+      })
+
+      rightBtn.addEventListener('click', () => {
+        container.scrollLeft += scrollAmount
+      })
+
+      container.addEventListener('scroll', () => {
+        window.requestAnimationFrame(updateButtons)
+      })
+
+      // Initial check
+      updateButtons()
+      
+      // Check on resize
+      window.addEventListener('resize', updateButtons)
+    }
+  </script>
+)}

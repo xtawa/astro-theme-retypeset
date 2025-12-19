@@ -41,6 +41,44 @@ This version includes several enhancements over the original Retypeset theme:
 - **Search**: Full-text search powered by [Algolia DocSearch](https://docsearch.algolia.com/) (free for open-source/technical blogs).
 - **Friends Page (`/friends`)**: A dedicated page to list your friends or recommended links, configurable via `src/friends.ts`.
 
+
+## Language Configuration
+
+You can configure the default language and supported languages in `src/config.ts`.
+
+### Default Language
+
+The default language is served at the root URL (`/`). To set Chinese as the default language:
+
+```typescript
+// src/config.ts
+global: {
+  // default language
+  locale: 'zh',
+  // ...
+}
+```
+
+With this configuration, accessing `https://your-site.com/` will display the Chinese version.
+
+### Supported Languages
+
+You can add more supported languages in the `moreLocales` array:
+
+```typescript
+// src/config.ts
+global: {
+  // ...
+  // more languages
+  moreLocales: ['en'], // Generates /en/ paths
+}
+```
+
+This will generate paths like `/en/` for English content.
+
+
+
+
 ## Friends Page Setup
 
 To add friends to your Friends page:
@@ -97,6 +135,9 @@ If you don't want to wait for DocSearch approval, you can create your own Algoli
 
 > **Note**: The Search-Only API Key is safe to expose in client-side code. Never use your Admin API Key!
 - **Post Copyright**: Automatically appends copyright information and license to the end of every post.
+- **Homepage Tags**: Optionally display a scrollable list of tags at the top of the homepage.
+    - Configurable in `src/config.ts` via `global.showTagsOnHome`.
+    - **Note**: If the dedicated Tags page is enabled (`pages.tags: true`), the homepage tags will be automatically hidden to avoid redundancy.
 - **Deployment Ready**: Pre-configured with `@astrojs/vercel` for easy deployment.
 
 ## Typewriter Effect

@@ -41,6 +41,7 @@ export interface ThemeConfig {
     toc: boolean
     katex: boolean
     reduceMotion: boolean
+    showTagsOnHome: boolean
   }
   comment: {
     enabled: boolean
@@ -109,5 +110,6 @@ export interface ThemeConfig {
     about?: boolean
     stats?: boolean
     friends?: boolean
+
   }
 }

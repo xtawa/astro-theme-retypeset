@@ -1,27 +1,27 @@
 ---
-title: vercel部署时遇到ERR_INVAILD_THIS的解决方法
+title: Solution to ERR_INVAILD_THIS when deploying on Vercel
 published: 2025-12-06T00:00:00
-description: 通过指定使用pnpm版本和启用vercel的实验性功能来解决ERR_INVAILD_THIS问题
+description: Solve the ERR_INVAILD_THIS problem by specifying the pnpm version and enabling Vercel's experimental features
 updated: ""
 tags:
   - blog
-  - 技术
+  - Technology
   - Vercel
   - Astro
 draft: false
 pin: 0
 toc: true
-lang: zh
+lang: en
 abbrlink: vercel-solution-pnpm
 share: true
-状态: 已完成
+Status: Completed
 ---
 
-在Vercel部署Astro时，遇到 ERR_INVAILD_THIS 错误
+When deploying Astro on Vercel, encountered `ERR_INVAILD_THIS` error.
 ![](https://r2.xtyin.com/images/72c8c8c7764ed2a9819a648071477d6d.png)
 
 <details>
-<summary>点此展开完整错误日志</summary>
+<summary>Click to expand full error log</summary>
 
 20:05:56.017 Running build in Washington, D.C., USA (East) – iad1
 20:05:56.018 Build machine configuration: 2 cores, 8 GB
@@ -87,16 +87,16 @@ share: true
 </details>
 
 
-## 问题分析
+## Problem Analysis
 
 
-Vercel使用的pnpm/npm版本可能有异常断流问题，需要升级版本.
+The pnpm/npm version used by Vercel may have abnormal disconnection issues and needs to be upgraded.
 
 
-## 解决方案
+## Solution
 
 
-1.在 package.json 中指定：
+1. Specify in `package.json`:
 
 
 ```json
@@ -104,10 +104,10 @@ Vercel使用的pnpm/npm版本可能有异常断流问题，需要升级版本.
 ```
 
 
-2.在Vercel中 Settings-Build and development指定Node版本为最新
+2. In Vercel, go to Settings-Build and development and specify the Node version as the latest.
 
 
-3.添加环境变量 
+3. Add environment variable
 
 
 ```plain text
@@ -115,4 +115,4 @@ ENABLE_EXPERIMENTAL_COREPACK=1
 ```
 
 
-然后Redeploy就行了.
+Then Redeploy.

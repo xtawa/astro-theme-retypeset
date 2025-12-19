@@ -8,7 +8,7 @@ tags:
 draft: false
 pin: 0
 toc: false
-lang: ""
+lang: zh
 abbrlink: good-sentences
 share: true
 状态: 正在写
