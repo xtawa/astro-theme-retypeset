@@ -61,8 +61,13 @@ const isAlgoliaEnabled = algoliaConfig?.enabled && algoliaConfig.appId && algoli
               apiKey: apiKey,
               indexName: indexName,
               container: '#docsearch',
-              debug: false, // Set to true if styling issues persist
+              debug: true, // Enable debug mode for troubleshooting
+              searchParameters: {
+                // Try to get more results
+                hitsPerPage: 10,
+              },
             });
+            console.log('DocSearch initialized successfully with:', { appId, indexName });
           } catch (e) {
             console.error('DocSearch init failed:', e);
           }

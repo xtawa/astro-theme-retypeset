@@ -6,7 +6,7 @@
   "repository": "https://github.com/radishzzz/astro-theme-retypeset",
   "scripts": {
     "dev": "astro check && astro dev",
-    "build": "astro check && astro build && pnpm apply-lqip",
+    "build": "astro check && astro build && pnpm apply-lqip && pnpm build-algolia",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
@@ -15,7 +15,8 @@
     "apply-lqip": "tsx scripts/apply-lqip.ts",
     "format-posts": "tsx scripts/format-posts.ts",
     "update-theme": "tsx scripts/update-theme.ts",
-    "fetch-casual": "tsx scripts/fetch-casual.ts"
+    "fetch-casual": "tsx scripts/fetch-casual.ts",
+    "build-algolia": "tsx scripts/build-algolia.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
@@ -57,11 +58,13 @@
     "@unocss/eslint-plugin": "66.5.10",
     "@unocss/preset-attributify": "66.5.10",
     "@unocss/reset": "66.5.10",
+    "algoliasearch": "^5.46.1",
     "astro-eslint-parser": "^1.2.2",
     "autocorrect-node": "^2.14.0",
     "eslint": "^9.39.1",
     "eslint-plugin-astro": "^1.5.0",
     "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
     "https-proxy-agent": "^7.0.6",
     "lint-staged": "^16.2.7",
     "node-fetch": "^3.3.2",

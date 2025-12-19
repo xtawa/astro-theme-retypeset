@@ -104,10 +104,11 @@ export const friends: Friend[] = [
 
 To enable search functionality, follow these steps:
 
-### 1. Apply for DocSearch
+### 1. Create an Algolia Account
 
-1. Go to [Algolia DocSearch](https://docsearch.algolia.com/apply/) and apply for free access.
-2. You'll receive an email with your credentials once approved (usually within 24-48 hours).
+1. Sign up at [Algolia](https://www.algolia.com/) (free tier available)
+2. Create a new application
+3. Create a new index (e.g., `your_blog_index`)
 
 ### 2. Configure your credentials
 
@@ -124,16 +125,47 @@ search: {
 },
 ```
 
-### 3. Alternative: Create your own Algolia index
+### 3. Set up automatic indexing on Vercel
 
-If you don't want to wait for DocSearch approval, you can create your own Algolia account:
+This theme includes a built-in script that automatically indexes your blog posts to Algolia during every deployment.
 
-1. Sign up at [Algolia](https://www.algolia.com/)
-2. Create a new application and index
-3. Use the [Algolia Crawler](https://www.algolia.com/products/search-and-discovery/crawler/) or [algolia-docsearch-scraper](https://github.com/algolia/docsearch-scraper) to index your site
-4. Use your credentials in `src/config.ts`
+**Add the following environment variable in Vercel:**
 
-> **Note**: The Search-Only API Key is safe to expose in client-side code. Never use your Admin API Key!
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `ALGOLIA_ADMIN_KEY` | Yes | Your Algolia **Admin API Key** (found in Algolia Dashboard → Settings → API Keys) |
+
+**Steps:**
+
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Add `ALGOLIA_ADMIN_KEY` with your Admin API Key
+4. Redeploy your site
+
+> ⚠️ **Security Note**: 
+> - The **Search-Only API Key** (in `config.ts`) is safe to expose in client-side code
+> - The **Admin API Key** (in Vercel env) should NEVER be committed to your repository
+
+### 4. Manual indexing (optional)
+
+You can also manually run the indexing script locally:
+
+```powershell
+# PowerShell
+$env:ALGOLIA_ADMIN_KEY="your-admin-api-key"
+pnpm build-algolia
+```
+
+```bash
+# Bash
+export ALGOLIA_ADMIN_KEY="your-admin-api-key"
+pnpm build-algolia
+```
+
+### Alternative: Use DocSearch Crawler
+
+If you prefer not to use the built-in indexing script, you can apply for [Algolia DocSearch](https://docsearch.algolia.com/apply/) which provides free hosting and indexing for open-source/technical blogs.
+
 - **Post Copyright**: Automatically appends copyright information and license to the end of every post.
 - **Homepage Tags**: Optionally display a scrollable list of tags at the top of the homepage.
     - Configurable in `src/config.ts` via `global.showTagsOnHome`.
@@ -271,6 +303,7 @@ For the best experience on Vercel, configure these environment variables:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
+| `ALGOLIA_ADMIN_KEY` | Required* | Algolia Admin API Key for search indexing |
 | `GITHUB_CLIENT_ID` | Optional | GitHub OAuth Client ID for admin login |
 | `GITHUB_CLIENT_SECRET` | Optional | GitHub OAuth Client Secret (keep this secret!) |
 | `PUBLIC_GITHUB_CLIENT_ID` | Optional | Same as GITHUB_CLIENT_ID (for client-side) |
@@ -278,7 +311,7 @@ For the best experience on Vercel, configure these environment variables:
 | `ADMIN_REPO_NAME` | Optional | Pre-configure repository name |
 | `CASUAL_TELEGRAM_CHANNEL` | Required* | Telegram channel for Casual page |
 
-*Required only if using the Casual page feature.
+*Required only if using the corresponding feature (search or casual page).
 
 ### Security Notes
 
