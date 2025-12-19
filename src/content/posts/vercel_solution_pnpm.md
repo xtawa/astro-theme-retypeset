@@ -11,7 +11,7 @@ tags:
 draft: false
 pin: 0
 toc: true
-lang: zh
+lang: ""
 abbrlink: vercel-solution-pnpm
 share: true
 状态: 已完成
