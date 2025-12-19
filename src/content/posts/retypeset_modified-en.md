@@ -1,7 +1,7 @@
 ---
-title: Introducing PaperWeave Theme
+title: 向您介绍 PaperWeave 主题
 published: 2025-12-13T21:25:00
-description: An Astro theme based on Retypeset with modifications, adding search, casual, statistics and other features
+description: 一款 Astro 主题，基于 Retypeset 进行二次修改，增加搜索、说说、统计等功能
 updated: ""
 tags:
   - Retypeset
@@ -11,36 +11,35 @@ draft: false
 pin: 0
 toc: true
 lang: en
-abbrlink: "retypeset-modified"
+abbrlink: retypeset_modified
 share: true
-Status: Completed
+状态: 已完成
 ---
-## Preview
-Homepage
+## 界面预览
+主页
 ![homepage.png](https://dav1.xtyin.com/homepage.png)
-Casual
+随心说
 ![casual.png](https://dav1.xtyin.com/casual.png)
-Statistics
+统计
 ![stats.png](https://dav1.xtyin.com/stats.png)
-Support page free enable/disable (ToDo)
+支持页面自由启用/禁用(ToDo)
+## 介绍
 
-## Introduction
+基于 Retypeset 主题深度定制。为喜欢记录生活的博主增加了动态内容流和丰富的数据展示功能。
 
-Deeply customized based on the Retypeset theme. Added dynamic content streams and rich data display functions for bloggers who like to record their lives.
+由于在魔改期间未及时进行记录，如果你喜欢的话可以直接fork我的仓库
 
-Since I didn't record it in time during the modification, if you like it, you can directly fork my repository.
+如果能点个 **🌟Star** 的话就更好啦😊谢谢你
 
-It would be better if you can give a **🌟Star** 😊 Thank you.
+## Github地址
 
-## Github Address
+[点此访问](https://github.com/xtawa/astro-theme-retypeset/tree/master)
 
-[Click to visit](https://github.com/xtawa/astro-theme-retypeset/tree/master)
+## 温馨提示
 
-## Tips
+仓库内文章为本人版权所有，请fork后及时**删除**
 
-The articles in the repository are copyrighted by me, please **delete** them in time after forking.
-
-## Highlights in Readme
+## Readme中部分亮点
 
 ---
 
@@ -95,14 +94,17 @@ If you don't want to wait for DocSearch approval, you can create your own Algoli
 
 The Statistics page (`/stats`) features a typewriter effect that displays a random sentence from your blog posts.
 
-- **How it works**: It automatically extracts sentences from any post tagged with `好词好句`
+- **How it works**: It automatically extracts sentences from any post tagged with `好词好句` 
 - **Default**: If no posts have this tag, it will display a default inspirational quote.
 - **Customization**: Simply add the tag `好词好句` to any Markdown post frontmatter to include its content in the quote pool.
 
 ## To-Do
-- [ ] Friends Link Page
+- [x] 友链页 ✅ 2025-12-19
+- [ ] ~~个人CV~~ **计划取消**
+- [x] 页面自由显示/隐藏 ✅ 2025-12-19
+- [x] 修复打字机卡顿效果 ✅ 2025-12-19
+- [x] 后台功能添加 ✅ 2025-12-19
+- [ ] Elog 支持
+- [x] 语言适配 ✅ 2025-12-19
+- [x] i18n修改 ✅ 2025-12-19
 
-- [ ] Page Free Display/Hide
-- [ ] Fix Typewriter Stuttering Effect
-- [ ] Backend Function Addition
-- [ ] Elog Support
