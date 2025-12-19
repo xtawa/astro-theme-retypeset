@@ -3,6 +3,8 @@ import type { Language } from '@/i18n/config'
 import type { Post } from '@/types'
 import PinIcon from '@/assets/icons/pin-icon.svg'
 import PostDate from '@/components/PostDate.astro'
+import TagList from '@/components/TagList.astro'
+import { themeConfig } from '@/config'
 import { getPostPath } from '@/i18n/path'
 import { getPostDescription } from '@/utils/description'
 import { isHomePage } from '@/utils/page'
@@ -79,6 +81,8 @@ const isHome = isHomePage(Astro.url.pathname)
             <p class="line-clamp-3 lg:line-clamp-none">{getPostDescription(post, 'list')}</p>
           </div>
         )}
+
+
       </li>
     )
   })}

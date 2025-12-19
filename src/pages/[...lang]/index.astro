@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const currentLang = getLangFromLocale(Astro.currentLocale)
 const pinnedPosts = await getPinnedPosts(currentLang)
 const postsByYear = await getPostsByYear(currentLang)
-const showTagsOnHome = themeConfig.global.showTagsOnHome && !(themeConfig.pages?.tags ?? true)
+const showTagsOnHome = themeConfig.global.showTagsOnHome
 const allTags = showTagsOnHome ? await getAllTags(currentLang) : []
 ---
 

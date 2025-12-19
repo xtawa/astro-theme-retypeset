@@ -110,7 +110,7 @@ const { Content, headings, remarkPluginFrontmatter } = await render(post)
     <!-- Date -->
     <div
       id="post-date"
-      class="mb-17.2 block c-primary font-time"
+      class="mb-6 block c-primary font-time"
       transition:name={`time-${slug}${currentLang ? `-${currentLang}` : ''}`}
       data-disable-theme-toggle-transition
     >
@@ -120,6 +120,16 @@ const { Content, headings, remarkPluginFrontmatter } = await render(post)
         minutes={remarkPluginFrontmatter.minutes}
       />
     </div>
+
+    <!-- Tag List -->
+    {post.data.tags?.length > 0 && (
+      <div class="mb-10">
+        <TagList
+          tags={post.data.tags}
+          lang={currentLang}
+        />
+      </div>
+    )}
     <!-- TOC -->
     {post.data.toc && <TOC headings={headings} />}
     <!-- Content -->
