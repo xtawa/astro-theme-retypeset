@@ -176,9 +176,46 @@ If you prefer not to use the built-in indexing script, you can apply for [Algoli
 
 The Statistics page (`/stats`) features a typewriter effect that displays a random sentence from your blog posts.
 
-- **How it works**: It automatically extracts sentences from any post tagged with `好词好句` (or `Good Quotes`).
+- **How it works**: It automatically extracts sentences from any post tagged with `好词好句` (or `Good Sentences`).
 - **Default**: If no posts have this tag, it will display a default inspirational quote.
-- **Customization**: Simply add the tag `好词好句` to any Markdown post frontmatter to include its content in the quote pool.
+- **Customization**: Simply add the tag `好词好句` or `Good Sentences` to any Markdown post frontmatter to include its content in the quote pool.
+
+## Multi-language Posts
+
+To create posts in multiple languages and enable language switching:
+
+### Naming Convention
+
+Use the same `abbrlink` for all language versions of the same post:
+
+```yaml
+# Chinese version (example-post-zh.md)
+---
+title: 我的文章
+lang: zh
+abbrlink: "my-post"   # <-- Same abbrlink
+---
+
+# English version (example-post-en.md)
+---
+title: My Post
+lang: en
+abbrlink: "my-post"   # <-- Same abbrlink
+---
+```
+
+### How Language Switching Works
+
+- The language switcher button only shows when a post exists in multiple languages
+- If you switch languages on a post that doesn't have the target language version, it stays on the current page instead of showing 404
+- Posts with `lang: ""` (empty) are displayed in all languages
+
+### File Naming Tips
+
+You can name your files however you like (e.g., `my-post.md`, `my-post-en.md`, `my-post-zh.md`). The important thing is:
+
+1. Set the `lang` field correctly in frontmatter (`zh`, `en`, etc.)
+2. Use the **same `abbrlink`** for all language versions of the same post
 
 ## Performance
 

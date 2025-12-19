@@ -9,7 +9,7 @@ import GithubCard from '@/components/Widgets/GithubCard.astro'
 import ImageZoom from '@/components/Widgets/ImageZoom.astro'
 import MediaEmbed from '@/components/Widgets/MediaEmbed.astro'
 import SoundEffect from '@/components/Widgets/SoundEffect.astro'
-import { themeConfig } from '@/config'
+import { allLocales, themeConfig } from '@/config'
 import Head from './Head.astro'
 import '@/styles/global.css'
 import '@/styles/font.css'
@@ -19,19 +19,27 @@ import '@/styles/lqip.css'
 import '@/styles/comment.css'
 import '@/styles/extension.css'
 
-const { description, image, title, post } = Astro.props
+interface Props {
+  description?: string
+  image?: string
+  title?: string
+  post?: any
+  postTitle?: string
+  postDescription?: string
+  postSlug?: string
+  supportedLangs?: Language[]
+}
+
+const { description, image, title, post, postTitle, postDescription, postSlug, supportedLangs: propSupportedLangs } = Astro.props
 const lang = Astro.currentLocale as Language
 const { reduceMotion } = themeConfig.global
 
 // Margin Bottom for Main Content
-const MarginBottom = post ? 'mb-20 lg:mb-30' : 'mb-30 lg:mb-40'
+const MarginBottom = post || postTitle ? 'mb-20 lg:mb-30' : 'mb-30 lg:mb-40'
 
-// Supported Languages for Translation Button
-// This usually comes from i18n config or props, here we can use all available locales or just let Button handle it if it has default.
-// Checking Button usage: <Button supportedLangs={supportedLangs} />
-// We need to define supportedLangs.
-import { allLocales } from '@/config'
-const supportedLangs = allLocales
+// Use provided supportedLangs or fallback to allLocales
+// This ensures the language switcher only shows languages where content exists
+const supportedLangs = propSupportedLangs && propSupportedLangs.length > 0 ? propSupportedLangs : allLocales
 ---
 
 <!doctype html>
