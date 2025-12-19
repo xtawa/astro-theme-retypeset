@@ -11,7 +11,7 @@ draft: false
 pin: 0
 toc: true
 lang: zh
-abbrlink: retypeset_modified
+abbrlink: retypeset-modified
 share: true
 状态: 已完成
 ---
