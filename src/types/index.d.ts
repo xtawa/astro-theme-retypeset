@@ -101,4 +101,13 @@ export interface ThemeConfig {
       indexName?: string
     }
   }
+  pages?: {
+    posts?: boolean
+    casual?: boolean
+    tags?: boolean
+    search?: boolean
+    about?: boolean
+    stats?: boolean
+    friends?: boolean
+  }
 }

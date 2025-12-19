@@ -1,8 +1,9 @@
 ---
+import { themeConfig } from '@/config'
 import { ui } from '@/i18n/ui'
 import { getPageInfo } from '@/utils/page'
 
-const { currentLang, isHome, isPost, isTag, isAbout, isCasual, isSearch, getLocalizedPath } = getPageInfo(Astro.url.pathname)
+const { currentLang, isHome, isPost, isTag, isAbout, isCasual, isSearch, isFriends, getLocalizedPath } = getPageInfo(Astro.url.pathname)
 const currentUI = ui[currentLang as keyof typeof ui] ?? {}
 
 const isPostActive = isHome || isPost
@@ -10,6 +11,7 @@ const isTagActive = isTag
 const isAboutActive = isAbout
 const isCasualActive = isCasual
 const isSearchActive = isSearch
+const isFriendsActive = isFriends
 
 function getNavItemClass(isActive: boolean) {
   return isActive
@@ -22,28 +24,39 @@ const navItems = [
     href: '/',
     label: currentUI.posts,
     className: getNavItemClass(isPostActive),
+    show: themeConfig.pages?.posts ?? true,
   },
   {
     href: '/casual/',
     label: currentUI.casual,
     className: getNavItemClass(isCasualActive),
+    show: themeConfig.pages?.casual ?? true,
   },
   {
     href: '/tags/',
     label: currentUI.tags,
     className: getNavItemClass(isTagActive),
+    show: themeConfig.pages?.tags ?? true,
   },
   {
     href: '/search/',
     label: currentUI.search,
     className: getNavItemClass(isSearchActive),
+    show: themeConfig.pages?.search ?? true,
+  },
+  {
+    href: '/friends/',
+    label: currentUI.friends,
+    className: getNavItemClass(isFriendsActive),
+    show: themeConfig.pages?.friends ?? true,
   },
   {
     href: '/about/',
     label: currentUI.about,
     className: getNavItemClass(isAboutActive),
+    show: themeConfig.pages?.about ?? true,
   },
-]
+].filter(item => item.show)
 ---
 
 <nav

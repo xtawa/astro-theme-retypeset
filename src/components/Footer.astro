@@ -6,6 +6,7 @@ import { ui } from '@/i18n/ui'
 
 const { author } = themeConfig.site
 const { links, startYear } = themeConfig.footer
+const showStats = themeConfig.pages?.stats ?? true
 
 const currentYear = new Date().getFullYear()
 const year = Number(startYear) === currentYear
@@ -59,13 +60,13 @@ const socialLinks = links.map(({ name, url }) => {
   lg="uno-desktop-column bottom-20 text-3.5"
 >
   <p>
-    {socialLinks.map((link) => (
+    {socialLinks.map((link, index) => (
       <>
         <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" {...link}>{link.name}</a>
-        {'/'}
+        {(showStats || index < socialLinks.length - 1) && '/'}
       </>
     ))}
-    <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" href={getLocalizedPath('/stats/', currentLang)}>{currentUI.stats}</a>
+    {showStats && <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" href={getLocalizedPath('/stats/', currentLang)}>{currentUI.stats}</a>}
   </p>
 
   <p>

@@ -39,6 +39,28 @@ This version includes several enhancements over the original Retypeset theme:
     - **Top Tags**: Most frequently used tags.
     - **Typewriter Effect**: Displays random quotes from your articles (tagged with `#好词好句`).
 - **Search**: Full-text search powered by [Algolia DocSearch](https://docsearch.algolia.com/) (free for open-source/technical blogs).
+- **Friends Page (`/friends`)**: A dedicated page to list your friends or recommended links, configurable via `src/friends.ts`.
+
+## Friends Page Setup
+
+To add friends to your Friends page:
+
+1.  Open `src/friends.ts`.
+2.  Add your friends' information to the `friends` array:
+
+```typescript
+export const friends: Friend[] = [
+  {
+    name: 'Friend Name',
+    url: 'https://friend-url.com',
+    avatar: 'https://friend-avatar-url.com/avatar.png',
+    description: 'Description of the friend.',
+  },
+  // Add more friends here
+]
+```
+
+3.  You can toggle the visibility of the Friends page in `src/config.ts` under the `pages` section.
 
 ## Algolia DocSearch Setup
 

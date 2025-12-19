@@ -204,8 +204,20 @@ export const themeConfig: ThemeConfig = {
       apiKey: '5e7da999c5375ffc89f0dc6d38a81570',
       indexName: 'blog_xtyin_pages',
     },
-  },  
+  },
   // PRELOAD SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END
+
+  // PAGE VISIBILITY SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> START
+  pages: {
+    posts: true,
+    casual: true,
+    tags: true,
+    search: true,
+    about: true,
+    stats: true,
+    friends: true,
+  },
+  // PAGE VISIBILITY SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END
 }
 
 export const base = themeConfig.site.base === '/' ? '' : themeConfig.site.base.replace(/\/$/, '')

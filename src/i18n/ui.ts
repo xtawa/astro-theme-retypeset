@@ -10,6 +10,7 @@ interface Translation {
   casual: string
   search: string
   stats: string
+  friends: string
   toc: string
 }
 
@@ -24,6 +25,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Gedanken',
     search: 'Suche',
     stats: 'Statistik',
+    friends: 'Freunde',
     toc: 'Inhaltsverzeichnis',
   },
   'en': {
@@ -36,6 +38,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Casual',
     search: 'Search',
     stats: 'Statistics',
+    friends: 'Friends',
     toc: 'Table of Contents',
   },
   'es': {
@@ -48,6 +51,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Pensamientos',
     search: 'Buscar',
     stats: 'Estadísticas',
+    friends: 'Amigos',
     toc: 'Índice',
   },
   'fr': {
@@ -60,6 +64,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Pensées',
     search: 'Rechercher',
     stats: 'Statistiques',
+    friends: 'Amis',
     toc: 'Table des matières',
   },
   'ja': {
@@ -72,6 +77,7 @@ export const ui: Record<Language, Translation> = {
     casual: '随想',
     search: '検索',
     stats: '統計',
+    friends: '友人',
     toc: '目次',
   },
   'ko': {
@@ -84,6 +90,7 @@ export const ui: Record<Language, Translation> = {
     casual: '단상',
     search: '검색',
     stats: '통계',
+    friends: '친구',
     toc: '목차',
   },
   'pl': {
@@ -96,6 +103,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Myśli',
     search: 'Szukaj',
     stats: 'Statystyki',
+    friends: 'Przyjaciele',
     toc: 'Spis treści',
   },
   'pt': {
@@ -108,6 +116,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Pensamentos',
     search: 'Procurar',
     stats: 'Estatísticas',
+    friends: 'Amigos',
     toc: 'Sumário',
   },
   'ru': {
@@ -120,6 +129,7 @@ export const ui: Record<Language, Translation> = {
     casual: 'Мысли',
     search: 'Поиск',
     stats: 'Статистика',
+    friends: 'Друзья',
     toc: 'Оглавление',
   },
   'zh': {
@@ -132,6 +142,7 @@ export const ui: Record<Language, Translation> = {
     casual: '随心说',
     search: '搜索',
     stats: 'Statistics',
+    friends: '友链',
     toc: '目录',
   },
   'zh-tw': {
@@ -144,6 +155,7 @@ export const ui: Record<Language, Translation> = {
     casual: '隨心說',
     search: '搜尋',
     stats: 'Statistics',
+    friends: '友鏈',
     toc: '目錄',
   },
 }

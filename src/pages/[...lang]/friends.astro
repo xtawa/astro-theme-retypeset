@@ -1,0 +1,33 @@
+---
+import { allLocales } from '@/config'
+import { getLangRouteParam, getLangFromLocale } from '@/i18n/lang'
+import Layout from '@/layouts/Layout.astro'
+import { friends } from '@/friends'
+import { ui } from '@/i18n/ui'
+
+export async function getStaticPaths() {
+  return allLocales.map(lang => ({
+    params: { lang: getLangRouteParam(lang) },
+  }))
+}
+
+const currentLang = getLangFromLocale(Astro.currentLocale)
+const currentUI = ui[currentLang as keyof typeof ui] ?? {}
+---
+
+<Layout title={currentUI.friends}>
+  <div class="uno-decorative-line" />
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+    {friends.map(friend => (
+      <a href={friend.url} target="_blank" rel="noopener noreferrer" class="block p-4 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-primary transition-colors group no-underline">
+        <div class="flex items-center gap-4">
+          <img src={friend.avatar} alt={friend.name} class="w-12 h-12 rounded-full" />
+          <div>
+            <div class="font-bold text-lg group-hover:text-primary transition-colors">{friend.name}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">{friend.description}</div>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</Layout>
