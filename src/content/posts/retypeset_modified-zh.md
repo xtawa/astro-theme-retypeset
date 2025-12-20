@@ -107,4 +107,5 @@ The Statistics page (`/stats`) features a typewriter effect that displays a rand
 - [ ] Elog 支持
 - [x] 语言适配 ✅ 2025-12-19
 - [x] i18n修改 ✅ 2025-12-19
+- [ ] 站点分流
 
