@@ -1,9 +1,10 @@
 ---
 // Admin Dashboard - direct URL access only
 // For production security, set pages.admin: false in config.ts
+import { base } from '@/config'
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-base={base}>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -501,7 +502,9 @@
       // Load admin config from API (env vars)
       async function loadAdminConfig() {
         try {
-          const response = await fetch('/api/admin/config');
+          // Handle base path if site is deployed to subdirectory
+          const basePath = document.documentElement.dataset.base || '';
+          const response = await fetch(`${basePath}/api/admin/config`);
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           adminConfig = await response.json();
           console.log('Admin Config Loaded:', adminConfig);

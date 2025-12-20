@@ -9,6 +9,11 @@ export const GET: APIRoute = async () => {
     hasOAuth: !!(import.meta.env.GITHUB_CLIENT_ID && import.meta.env.GITHUB_CLIENT_SECRET),
   };
 
+  console.log('API Config Loaded:', {
+    ...config,
+    githubClientId: config.githubClientId ? '***' : undefined, // Mask secret
+  });
+
   return new Response(JSON.stringify(config), {
     status: 200,
     headers: {
