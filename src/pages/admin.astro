@@ -478,6 +478,11 @@
   <script is:inline src="https://cdn.jsdelivr.net/npm/octokit@3.1.2/dist/web/index.min.js"></script>
   <script is:inline>
     (function() {
+      if (!window.Octokit) {
+        console.error('Octokit library not loaded. Check your network connection or CDN accessibility.');
+        alert('❌ Failed to load GitHub API library. Please check your network connection or try a VPN if you are in a restricted region.');
+        return;
+      }
       const { Octokit } = window.Octokit;
       
       let octokit, owner, repo;
@@ -497,7 +502,9 @@
       async function loadAdminConfig() {
         try {
           const response = await fetch('/api/admin/config');
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           adminConfig = await response.json();
+          console.log('Admin Config Loaded:', adminConfig);
           
           // If OAuth is configured, show OAuth button
           if (adminConfig.hasOAuth && adminConfig.githubClientId) {
@@ -506,15 +513,20 @@
           
           // Pre-fill repo owner and name from env vars
           if (adminConfig.repoOwner) {
-            document.getElementById('repo-owner').value = adminConfig.repoOwner;
-            document.getElementById('repo-owner').disabled = true;
+            const ownerInput = document.getElementById('repo-owner');
+            ownerInput.value = adminConfig.repoOwner;
+            // Only disable if it's a valid value
+            if (adminConfig.repoOwner.trim()) ownerInput.disabled = true;
           }
           if (adminConfig.repoName) {
-            document.getElementById('repo-name').value = adminConfig.repoName;
-            document.getElementById('repo-name').disabled = true;
+            const repoInput = document.getElementById('repo-name');
+            repoInput.value = adminConfig.repoName;
+            if (adminConfig.repoName.trim()) repoInput.disabled = true;
           }
         } catch (error) {
           console.error('Failed to load admin config:', error);
+          // Don't alert here to avoid annoying the user if it's just a config issue,
+          // but log it clearly.
         }
       }
 
@@ -552,7 +564,14 @@
 
         try {
           octokit = new Octokit({ auth: token });
-          const { data: user } = await octokit.rest.users.getAuthenticated();
+          
+          // Add timeout to prevent hanging
+          const loginPromise = octokit.rest.users.getAuthenticated();
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Connection timed out. Please check your network.')), 10000)
+          );
+
+          const { data: user } = await Promise.race([loginPromise, timeoutPromise]);
           
           localStorage.setItem('admin_owner', owner);
           localStorage.setItem('admin_repo', repo);
@@ -598,7 +617,14 @@
 
         try {
           octokit = new Octokit({ auth: token });
-          const { data: user } = await octokit.rest.users.getAuthenticated();
+          
+          // Add timeout to prevent hanging
+          const loginPromise = octokit.rest.users.getAuthenticated();
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Connection timed out. Please check your network.')), 10000)
+          );
+
+          const { data: user } = await Promise.race([loginPromise, timeoutPromise]);
           
           localStorage.setItem('admin_owner', owner);
           localStorage.setItem('admin_repo', repo);
